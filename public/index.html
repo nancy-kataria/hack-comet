@@ -1,46 +1,390 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Comet - Team Pact Creator</title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  </head>
+  <body>
     <div class="app-container">
-        <!-- navigation bar -->
-        <div class="progress-bar">
-            <div class="progress-step active" data-step="1">Landing</div>
-            <div class="progress-step" data-step="2">Create Pact</div>
-            <div class="progress-step" data-step="3">Set Deadlines</div>
-            <div class="progress-step" data-step="4">Decision Rules</div>
-            <div class="progress-step" data-step="5">Review</div>
-            <div class="progress-step" data-step="6">Signatures</div>
-            <div class="progress-step" data-step="7">Voting</div>
+      <!-- navigation bar -->
+      <div class="progress-bar">
+        <div class="progress-step active" data-step="1">Landing</div>
+        <div class="progress-step" data-step="2">Create Pact</div>
+        <div class="progress-step" data-step="3">Set Deadlines</div>
+        <div class="progress-step" data-step="4">Decision Rules</div>
+        <div class="progress-step" data-step="5">Review</div>
+        <div class="progress-step" data-step="6">Signatures</div>
+        <div class="progress-step" data-step="7">Voting</div>
+      </div>
+
+      <div class="page" id="page-1">
+        <h1>Welcome to Hack Comet</h1>
+        <p class="tagline">Align your team. Define your mission.</p>
+
+        <div class="illustration">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <path
+              d="M60,10 L70,50 L110,60 L70,70 L60,110 L50,70 L10,60 L50,50 Z"
+              fill="#4A90E2"
+            />
+            <circle cx="60" cy="60" r="5" fill="#FFF" />
+            <path d="M70,50 L110,10" stroke="#4A90E2" stroke-width="2" />
+          </svg>
         </div>
 
-        <div class="page" id="page-1">
-            <h1>Welcome to Hack Comet</h1>
-            <p class="tagline">Align your team. Define your mission.</p>
-            
-            <div class="illustration">
-                <svg width="120" height="120" viewBox="0 0 120 120">
-                    <path d="M60,10 L70,50 L110,60 L70,70 L60,110 L50,70 L10,60 L50,50 Z" fill="#4A90E2" />
-                    <circle cx="60" cy="60" r="5" fill="#FFF" />
-                    <path d="M70,50 L110,10" stroke="#4A90E2" stroke-width="2" />
-                </svg>
-            </div>
-            
-            <div class="info-section">
-                <h3>What is this?</h3>
-                <p>Hack Comet helps hackathon teams create clear agreements about how they'll work together. Define your team, set deadlines, establish decision-making rules, and more.</p>
-            </div>
-            
-            <button class="primary-button" id="start-button">Create New Team Pact</button>
+        <div class="info-section">
+          <h3>What is this?</h3>
+          <p>
+            Hack Comet helps hackathon teams create clear agreements about how
+            they'll work together. Define your team, set deadlines, establish
+            decision-making rules, and more.
+          </p>
         </div>
 
+        <button class="primary-button" id="start-button">
+          Create New Team Pact
+        </button>
+      </div>
+
+      <!-- Page 2: Contract Creation Page -->
+      <div class="page hidden" id="page-2">
+        <h1>Create Your Team Pact</h1>
+        <p>Let's collect some basic information about your team and project.</p>
+
+        <div class="form-group">
+          <label for="team-name">Team Name</label>
+          <input type="text" id="team-name" placeholder="Enter your team name">
+        </div>
+
+        <div class="form-group">
+          <label for="project-idea">Project Idea</label>
+          <textarea
+            id="project-idea"
+            placeholder="Describe your project idea"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Team Members</label>
+          <div id="team-members-container">
+            <div class="team-member-row">
+              <input type="text" class="member-name" placeholder="Name">
+              <input type="text" class="member-role" placeholder="Role">
+              <input type="email" class="member-email" placeholder="Email">
+              <button class="remove-member-button" disabled>×</button>
+            </div>
+          </div>
+          <button class="secondary-button" id="add-member-button">
+            + Add Member
+          </button>
+        </div>
+
+        <div class="members-summary">
+          <h3>Team Summary</h3>
+          <table id="members-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Will be populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="navigation-buttons">
+          <button class="secondary-button prev-button">Back</button>
+          <button class="primary-button next-button">
+            Next: Set Deadlines
+          </button>
+        </div>
+      </div>
+
+      <!-- Page 3: Deadlines & Fallback Plan -->
+      <div class="page hidden" id="page-3">
+        <h1>Deadlines & Fallback Plan</h1>
+        <p>Define milestones and fallback strategies.</p>
+
+        <div class="form-section">
+          <h2>Deadlines</h2>
+          <div id="deadlines-container">
+            <div class="deadline-row">
+              <input
+                type="text"
+                class="deadline-description"
+                placeholder="First prototype by"
+              >
+              <input type="date" class="deadline-date">
+              <button class="remove-deadline-button" disabled>×</button>
+            </div>
+            <div class="deadline-row">
+              <input
+                type="text"
+                class="deadline-description"
+                placeholder="Final submission by"
+              >
+              <input type="date" class="deadline-date">
+              <button class="remove-deadline-button">×</button>
+            </div>
+          </div>
+          <button class="secondary-button" id="add-deadline-button">
+            + Add Deadline
+          </button>
+        </div>
+
+        <div class="form-section">
+          <h2>Fallback Plans</h2>
+          <div class="form-group">
+            <label for="fallback-text">Fallback Strategy</label>
+            <textarea
+              id="fallback-text"
+              placeholder="Example: If the API fails, we will use mock data."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="fallback-dropdown">Common Fallback Strategies</label>
+            <select id="fallback-dropdown">
+              <option value="">Choose common fallback strategies</option>
+              <option value="mock">Use mock data if API fails</option>
+              <option value="simplified">
+                Create simplified version if time runs out
+              </option>
+              <option value="focus">
+                Focus on core features if scope becomes too large
+              </option>
+              <option value="pair">Pair program if someone gets stuck</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="navigation-buttons">
+          <button class="secondary-button prev-button">Back</button>
+          <button class="primary-button next-button">
+            Next: Decision Rules
+          </button>
+        </div>
+      </div>
+
+      <!-- Page 4: Decision-Making Rules -->
+      <div class="page hidden" id="page-4">
+        <h1>Decision-Making Rules</h1>
+        <p>Set the ground rules for how the team will make decisions.</p>
+
+        <div class="form-section">
+          <h2>Decision Method</h2>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="majority-vote"
+                name="decision-method"
+                value="majority"
+              >
+              <label for="majority-vote">Majority vote</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="team-lead"
+                name="decision-method"
+                value="lead"
+              >
+              <label for="team-lead">Team lead decides</label>
+            </div>
+            <div class="radio-option">
+              <input
+                type="radio"
+                id="consensus"
+                name="decision-method"
+                value="consensus"
+              >
+              <label for="consensus">Consensus required</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Custom Rules</h2>
+          <div class="form-group">
+            <label for="custom-rules"
+            >Add any additional decision-making rules</label>
+            <textarea
+              id="custom-rules"
+              placeholder="Enter any custom decision-making rules for your team"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="navigation-buttons">
+          <button class="secondary-button prev-button">Back</button>
+          <button class="primary-button next-button">
+            Next: Review & Confirm
+          </button>
+        </div>
+      </div>
+
+      <!-- Page 5: Review & Confirm Page -->
+      <div class="page hidden" id="page-5">
+        <h1>Review & Confirm</h1>
+        <p>Review all the details of your team pact before finalizing.</p>
+
+        <div class="review-section">
+          <div class="review-item">
+            <h3>Team Information</h3>
+            <div class="review-content">
+              <p>
+                <strong>Team Name:</strong>
+                <span id="review-team-name"></span>
+              </p>
+              <p>
+                <strong>Project Idea:</strong>
+                <span id="review-project-idea"></span>
+              </p>
+            </div>
+            <button class="edit-section-button" data-page="2">Edit</button>
+          </div>
+
+          <div class="review-item">
+            <h3>Team Members</h3>
+            <div class="review-content" id="review-members-list">
+              <!-- Will be populated dynamically -->
+            </div>
+            <button class="edit-section-button" data-page="2">Edit</button>
+          </div>
+
+          <div class="review-item">
+            <h3>Deadlines</h3>
+            <div class="review-content" id="review-deadlines">
+              <!-- Will be populated dynamically -->
+            </div>
+            <button class="edit-section-button" data-page="3">Edit</button>
+          </div>
+
+          <div class="review-item">
+            <h3>Fallback Plans</h3>
+            <div class="review-content">
+              <p id="review-fallback"></p>
+            </div>
+            <button class="edit-section-button" data-page="3">Edit</button>
+          </div>
+
+          <div class="review-item">
+            <h3>Decision Rules</h3>
+            <div class="review-content">
+              <p>
+                <strong>Decision Method:</strong>
+                <span id="review-decision-method"></span>
+              </p>
+              <p>
+                <strong>Custom Rules:</strong>
+                <span id="review-custom-rules"></span>
+              </p>
+            </div>
+            <button class="edit-section-button" data-page="4">Edit</button>
+          </div>
+        </div>
+
+        <div class="navigation-buttons">
+          <button class="secondary-button prev-button">Back</button>
+          <button class="primary-button next-button">Finalize & Sign</button>
+        </div>
+      </div>
+
+      <!-- Page 6: Signature Page -->
+      <div class="page hidden" id="page-6">
+        <h1>Sign Your Team Pact</h1>
+        <p>Get digital confirmation from all team members.</p>
+
+        <div class="signatures-container" id="signatures-container">
+          <!-- Will be populated dynamically with signature fields for each team member -->
+        </div>
+
+        <div class="signature-status">
+          <p>
+            Signed by <span id="signed-count">0</span>/<span id="total-members"
+            >0</span> members
+          </p>
+        </div>
+
+        <div class="navigation-buttons">
+          <button class="secondary-button prev-button">Back</button>
+          <button class="primary-button" id="finalize-button">
+            Finalize Pact
+          </button>
+        </div>
+      </div>
+
+      <!-- Page 7: Voting Page -->
+      <div class="page hidden" id="page-7">
+        <h1>Team Voting</h1>
+        <p>Anonymous voting on team decisions.</p>
+
+        <div class="voting-container">
+          <div class="voting-question">
+            <h2 id="vote-question">
+              Should we switch from Firebase to Supabase?
+            </h2>
+          </div>
+
+          <div class="voting-options">
+            <button class="vote-option" data-vote="yes">
+              <span class="vote-icon yes">✓</span> Yes
+            </button>
+            <button class="vote-option" data-vote="no">
+              <span class="vote-icon no">✗</span> No
+            </button>
+            <button class="vote-option" data-vote="neutral">
+              <span class="vote-icon neutral">⚪</span> Neutral
+            </button>
+          </div>
+
+          <div class="voting-status">
+            <p id="voting-message">
+              Thank you! Waiting for other members to vote...
+            </p>
+            <p>
+              Progress: <span id="votes-submitted">3</span> of <span
+                id="total-votes"
+              >5</span> votes submitted
+            </p>
+          </div>
+
+          <div class="voting-results hidden" id="voting-results">
+            <h3>Voting Results</h3>
+            <div class="results-chart">
+              <div class="chart-bar yes-bar" style="width: 60%">
+                <span class="vote-count">3</span>
+              </div>
+              <div class="chart-bar no-bar" style="width: 20%">
+                <span class="vote-count">1</span>
+              </div>
+              <div class="chart-bar neutral-bar" style="width: 20%">
+                <span class="vote-count">1</span>
+              </div>
+            </div>
+            <div class="chart-labels">
+              <div class="chart-label">Yes</div>
+              <div class="chart-label">No</div>
+              <div class="chart-label">Neutral</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="navigation-buttons">
+          <button class="secondary-button" id="back-to-pact">
+            Back to Pact
+          </button>
+          <button class="primary-button" id="new-vote">Create New Vote</button>
+        </div>
+      </div>
     </div>
 
-    <!-- <script src="script.js"></script> -->
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
