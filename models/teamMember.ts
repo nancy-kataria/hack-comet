@@ -15,11 +15,17 @@ export class TeamMember {
     public id: number,
     public name: string,
     public role: string,
+    public email: string,
   ) {}
 }
 
 if (import.meta.main) {
-  const member = new TeamMember(776735858, "Ash Ketchum", "pokemon trainer`");
+  const member = new TeamMember(
+    776735858,
+    "Ash Ketchum",
+    "pokemon trainer",
+    "ashketchum@gmail.com",
+  );
   const expandedMember = await jsonld.expand(docOf(member));
   console.log(expandedMember);
 
