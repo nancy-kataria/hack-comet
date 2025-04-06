@@ -20,6 +20,7 @@ export class Contract {
     public finalProductDate: string,
     public decisionMethod: "Majority Vote" | "Representative Decision",
     public customRules: string,
+    public signedAgreement: boolean,
   ) {}
 }
 
@@ -33,6 +34,7 @@ if (import.meta.main) {
     new Date().toISOString(),
     "Majority Vote",
     "Anybody not agreeing to the decision method will not be thrown out of the team.",
+    true,
   );
   const expandedContract = await jsonld.expand(docOf(contract));
   console.log(expandedContract);
