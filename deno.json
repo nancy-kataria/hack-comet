@@ -1,8 +1,10 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --watch main.ts",
+    "start": "deno run -A --unstable-kv main.ts"
   },
   "imports": {
+    "#/": "./",
     "@fartlabs/declarative": "jsr:@fartlabs/declarative@^0.0.7",
     "@fartlabs/rt": "jsr:@fartlabs/rt@^0.0.10",
     "@std/assert": "jsr:@std/assert@1",
