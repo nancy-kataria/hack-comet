@@ -2,7 +2,9 @@
 
 A digital contract for your hackathon project.
 
-Hack Comet helps hackathon teams create clear agreements about how they'll work together. Define your team, set deadlines, establish decision-making rules, and more.
+Hack Comet helps hackathon teams create clear agreements about how they'll work
+together. Define your team, set deadlines, establish decision-making rules, and
+more.
 
 ## Technical overview
 

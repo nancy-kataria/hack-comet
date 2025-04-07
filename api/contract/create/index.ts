@@ -19,7 +19,7 @@ export const router = new Router()
       body.signedAgreement,
     );
 
-    console.log(contract)
+    console.log(contract);
     if (!contract.validate()) {
       throw new Error("Invalid contract");
     }
