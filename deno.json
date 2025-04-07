@@ -13,6 +13,7 @@
     "jsonld": "npm:jsonld@^8.3.3"
   },
   "compilerOptions": {
-    "lib": ["dom", "deno.ns", "deno.window"]
+    "lib": ["dom", "deno.ns", "deno.window"],
+    "experimentalDecorators": false
   }
 }
