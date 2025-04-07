@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const deadlinesContainer = document.getElementById("deadlines-container");
   const editSectionButtons = document.querySelectorAll(".edit-section-button");
   const finalizeButton = document.getElementById("finalize-button");
+  const homeButton = document.getElementById("home-navigate-button")
 
   // Initialize the application
   function init() {
@@ -69,6 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Finalize button
     finalizeButton.addEventListener("click", finalizePact);
+
+    homeButton.addEventListener("click", () => location.reload())
 
     // backToPactButton.addEventListener("click", () => navigateToPage(5));
   }
