@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Comet - Team Pact Creator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="app-container">
@@ -16,7 +16,7 @@
         <div class="progress-step" data-step="4">Decision Rules</div>
         <div class="progress-step" data-step="5">Review</div>
         <div class="progress-step" data-step="6">Signatures</div>
-        <div class="progress-step" data-step="7">Voting</div>
+        <div class="progress-step" data-step="7">Final Contract</div>
       </div>
 
       <div class="page" id="page-1">
@@ -55,7 +55,20 @@
 
         <div class="form-group">
           <label for="team-name">Team Name</label>
-          <input type="text" id="team-name" placeholder="Enter your team name">
+          <input
+            type="text"
+            id="team-name"
+            placeholder="Enter your team name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="team-name">Team Lead</label>
+          <input
+            type="text"
+            id="team-lead"
+            placeholder="Enter your Team Lead Name"
+          />
         </div>
 
         <div class="form-group">
@@ -70,9 +83,9 @@
           <label>Team Members</label>
           <div id="team-members-container">
             <div class="team-member-row">
-              <input type="text" class="member-name" placeholder="Name">
-              <input type="text" class="member-role" placeholder="Role">
-              <input type="email" class="member-email" placeholder="Email">
+              <input type="text" class="member-name" placeholder="Name" />
+              <input type="text" class="member-role" placeholder="Role" />
+              <input type="email" class="member-email" placeholder="Email" />
               <button class="remove-member-button" disabled>×</button>
             </div>
           </div>
@@ -105,61 +118,22 @@
         </div>
       </div>
 
-      <!-- Page 3: Deadlines & Fallback Plan -->
+      <!-- Page 3: Deadlines -->
       <div class="page hidden" id="page-3">
-        <h1>Deadlines & Fallback Plan</h1>
+        <h1>Plan Deadlines</h1>
         <p>Define milestones and fallback strategies.</p>
 
         <div class="form-section">
           <h2>Deadlines</h2>
           <div id="deadlines-container">
-            <div class="deadline-row">
-              <input
-                type="text"
-                class="deadline-description"
-                placeholder="First prototype by"
-              >
-              <input type="date" class="deadline-date">
-              <button class="remove-deadline-button" disabled>×</button>
+            <div class="deadline-row-1">
+              <p>First Prototype</p>
+              <input type="date" class="prototype-deadline-date" />
             </div>
-            <div class="deadline-row">
-              <input
-                type="text"
-                class="deadline-description"
-                placeholder="Final submission by"
-              >
-              <input type="date" class="deadline-date">
-              <button class="remove-deadline-button">×</button>
+            <div class="deadline-row-2">
+              <p>Final Product</p>
+              <input type="date" class="final-product-deadline-date" />
             </div>
-          </div>
-          <button class="secondary-button" id="add-deadline-button">
-            + Add Deadline
-          </button>
-        </div>
-
-        <div class="form-section">
-          <h2>Fallback Plans</h2>
-          <div class="form-group">
-            <label for="fallback-text">Fallback Strategy</label>
-            <textarea
-              id="fallback-text"
-              placeholder="Example: If the API fails, we will use mock data."
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="fallback-dropdown">Common Fallback Strategies</label>
-            <select id="fallback-dropdown">
-              <option value="">Choose common fallback strategies</option>
-              <option value="mock">Use mock data if API fails</option>
-              <option value="simplified">
-                Create simplified version if time runs out
-              </option>
-              <option value="focus">
-                Focus on core features if scope becomes too large
-              </option>
-              <option value="pair">Pair program if someone gets stuck</option>
-            </select>
           </div>
         </div>
 
@@ -184,31 +158,21 @@
                 type="radio"
                 id="majority-vote"
                 name="decision-method"
-                value="majority"
-              >
-              <label for="majority-vote">Majority vote</label>
+                value="Majority Vote"
+              />
+              <label for="majority-vote">Majority Vote</label>
             </div>
             <div class="radio-option">
               <input
                 type="radio"
                 id="team-lead"
                 name="decision-method"
-                value="lead"
-              >
-              <label for="team-lead">Team lead decides</label>
-            </div>
-            <div class="radio-option">
-              <input
-                type="radio"
-                id="consensus"
-                name="decision-method"
-                value="consensus"
-              >
-              <label for="consensus">Consensus required</label>
+                value="Representative Decision"
+              />
+              <label for="team-lead">Representative Decision</label>
             </div>
           </div>
         </div>
-
         <div class="form-section">
           <h2>Custom Rules</h2>
           <div class="form-group">
@@ -252,25 +216,13 @@
 
           <div class="review-item">
             <h3>Team Members</h3>
-            <div class="review-content" id="review-members-list">
-              <!-- Will be populated dynamically -->
-            </div>
+            <div class="review-content" id="review-members-list"></div>
             <button class="edit-section-button" data-page="2">Edit</button>
           </div>
 
           <div class="review-item">
             <h3>Deadlines</h3>
-            <div class="review-content" id="review-deadlines">
-              <!-- Will be populated dynamically -->
-            </div>
-            <button class="edit-section-button" data-page="3">Edit</button>
-          </div>
-
-          <div class="review-item">
-            <h3>Fallback Plans</h3>
-            <div class="review-content">
-              <p id="review-fallback"></p>
-            </div>
+            <div class="review-content" id="review-deadlines"></div>
             <button class="edit-section-button" data-page="3">Edit</button>
           </div>
 
@@ -298,89 +250,45 @@
 
       <!-- Page 6: Signature Page -->
       <div class="page hidden" id="page-6">
-        <h1>Sign Your Team Pact</h1>
-        <p>Get digital confirmation from all team members.</p>
+        <h1>Sign Your Team Agreement</h1>
+        <p>Team Lead can sign the agreement for all.</p>
 
         <div class="signatures-container" id="signatures-container">
-          <!-- Will be populated dynamically with signature fields for each team member -->
-        </div>
-
-        <div class="signature-status">
-          <p>
-            Signed by <span id="signed-count">0</span>/<span id="total-members"
-            >0</span> members
-          </p>
+          <div class="signature-row">
+            <div class="signature-name"></div>
+            <div class="signature-checkbox">
+              <input type="checkbox" id="signature" class="signature-check" />
+              <label for="signature">I agree to the terms of this pact.</label>
+            </div>
+          </div>
         </div>
 
         <div class="navigation-buttons">
           <button class="secondary-button prev-button">Back</button>
-          <button class="primary-button" id="finalize-button">
+          <button class="primary-button naxt-button" id="finalize-button">
             Finalize Pact
           </button>
         </div>
       </div>
 
-      <!-- Page 7: Voting Page -->
       <div class="page hidden" id="page-7">
-        <h1>Team Voting</h1>
-        <p>Anonymous voting on team decisions.</p>
+        <h3>Final Contract</h3>
+        <p>Here's your Final Agreement</p>
 
-        <div class="voting-container">
-          <div class="voting-question">
-            <h2 id="vote-question">
-              Should we switch from Firebase to Supabase?
-            </h2>
+        <div class="display-agreement">
+          <div>
+            <h3 class="team-name"></h3>
           </div>
-
-          <div class="voting-options">
-            <button class="vote-option" data-vote="yes">
-              <span class="vote-icon yes">✓</span> Yes
-            </button>
-            <button class="vote-option" data-vote="no">
-              <span class="vote-icon no">✗</span> No
-            </button>
-            <button class="vote-option" data-vote="neutral">
-              <span class="vote-icon neutral">⚪</span> Neutral
-            </button>
+          <p class="project-idea"></p>
+          <div class="agreement-section">
+            <h4>Team Lead</h4>
+            <p class="team-lead"></p>
           </div>
-
-          <div class="voting-status">
-            <p id="voting-message">
-              Thank you! Waiting for other members to vote...
-            </p>
-            <p>
-              Progress: <span id="votes-submitted">3</span> of <span
-                id="total-votes"
-              >5</span> votes submitted
-            </p>
+          <div>
+            <h4>Decision Method & Rules</h4>
+            <p class="decision-method"></p>
+            <p class="custom-rules"></p>
           </div>
-
-          <div class="voting-results hidden" id="voting-results">
-            <h3>Voting Results</h3>
-            <div class="results-chart">
-              <div class="chart-bar yes-bar" style="width: 60%">
-                <span class="vote-count">3</span>
-              </div>
-              <div class="chart-bar no-bar" style="width: 20%">
-                <span class="vote-count">1</span>
-              </div>
-              <div class="chart-bar neutral-bar" style="width: 20%">
-                <span class="vote-count">1</span>
-              </div>
-            </div>
-            <div class="chart-labels">
-              <div class="chart-label">Yes</div>
-              <div class="chart-label">No</div>
-              <div class="chart-label">Neutral</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="navigation-buttons">
-          <button class="secondary-button" id="back-to-pact">
-            Back to Pact
-          </button>
-          <button class="primary-button" id="new-vote">Create New Vote</button>
         </div>
       </div>
     </div>
