@@ -1,5 +1,5 @@
 import { Router } from "@fartlabs/rt";
-import { db } from "./../../../database/db.ts";
+import { db } from "#/database/db.ts";
 
 export const router = new Router()
   .get("/api/contract/get/:id", async ({ params }) => {
