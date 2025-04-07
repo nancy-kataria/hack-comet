@@ -1,14 +1,23 @@
-Deno.serve(async (req) => {
-  const url = new URL(req.url);
+import { serveDir } from "@std/http/file-server";
+import { Router } from "@fartlabs/rt";
+import { router as createContract } from "#/api/contract/create/index.ts";
+import { router as getContract } from "#/api/contract/get/index.ts";
+import { router as createMember } from "#/api/member/create/index.ts";
+import { router as getMember } from "#/api/member/get/index.ts";
 
-  // Serve index.html for root route
-  if (url.pathname === "/") {
-    const file = await Deno.readFile(`public/index.html`);
-    return new Response(file, {
-      headers: { "content-type": "text/html" },
+const router = new Router()
+  .use(createContract)
+  .use(getContract)
+  .use(createMember)
+  .use(getMember)
+  .get("/*", ({ request }) => {
+    return serveDir(request, {
+      fsRoot: "public",
+      urlRoot: "",
+      showIndex: true,
     });
-  }
+  });
 
-  // Default response for non-root routes
-  return new Response("Not Found", { status: 404 });
-});
+if (import.meta.main) {
+  Deno.serve((request) => router.fetch(request));
+}
