@@ -1,7 +1,7 @@
 import { Router } from "@fartlabs/rt";
 import { db } from "./../../../database/db.ts";
 
-export const getContractRouter = new Router()
+export const router = new Router()
   .get("/api/contract/get/:id", async ({ params }) => {
     const contractId = params?.pathname.groups?.id;
 
