@@ -1,21 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // State management
   const state = {
+    id: "",
     currentPage: 1,
     teamName: "",
+    teamLead: "",
     projectIdea: "",
     teamMembers: [],
-    deadlines: [],
-    fallbackPlan: "",
+    firstPrototypeDate: "",
+    finalProductDate: "",
     decisionMethod: "",
     customRules: "",
-    signatures: [],
-    votes: {
-      yes: 0,
-      no: 0,
-      neutral: 0,
-    },
-    userVoted: false,
+    signedAgreement: false,
   };
 
   // DOM elements
@@ -28,17 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const teamMembersContainer = document.getElementById(
     "team-members-container",
   );
-  const membersTable = document.getElementById("members-table").querySelector(
-    "tbody",
-  );
-  const addDeadlineButton = document.getElementById("add-deadline-button");
+  const membersTable = document
+    .getElementById("members-table")
+    .querySelector("tbody");
   const deadlinesContainer = document.getElementById("deadlines-container");
-  const fallbackDropdown = document.getElementById("fallback-dropdown");
   const editSectionButtons = document.querySelectorAll(".edit-section-button");
   const finalizeButton = document.getElementById("finalize-button");
-  const voteOptions = document.querySelectorAll(".vote-option");
-  const backToPactButton = document.getElementById("back-to-pact");
-  const newVoteButton = document.getElementById("new-vote");
 
   // Initialize the application
   function init() {
@@ -69,12 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Team members
     addMemberButton.addEventListener("click", addTeamMember);
 
-    // Deadlines
-    addDeadlineButton.addEventListener("click", addDeadline);
-
-    // Fallback dropdown
-    fallbackDropdown.addEventListener("change", handleFallbackSelection);
-
     // Edit section buttons
     editSectionButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -86,13 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Finalize button
     finalizeButton.addEventListener("click", finalizePact);
 
-    // Voting
-    voteOptions.forEach((option) => {
-      option.addEventListener("click", handleVote);
-    });
-
-    backToPactButton.addEventListener("click", () => navigateToPage(5));
-    newVoteButton.addEventListener("click", createNewVote);
+    // backToPactButton.addEventListener("click", () => navigateToPage(5));
   }
 
   // Navigation
@@ -116,7 +94,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // If navigating to signature page, generate signature fields
     if (pageNumber === 6) {
-      generateSignatureFields();
+      signPage();
+    }
+
+    if (pageNumber === 7) {
+      showAgreement();
     }
   }
 
@@ -155,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function validateContractCreation() {
     const teamNameInput = document.getElementById("team-name");
     const projectIdeaInput = document.getElementById("project-idea");
+    const teamLeadInput = document.getElementById("team-lead");
 
     if (!teamNameInput.value.trim()) {
       alert("Please enter a team name");
@@ -168,12 +151,19 @@ document.addEventListener("DOMContentLoaded", function () {
       return false;
     }
 
+    if (!teamLeadInput.value.trim()) {
+      alert("Please enter Team Lead Name");
+      teamLeadInput.focus();
+      return false;
+    }
+
     // Save data to state
     state.teamName = teamNameInput.value.trim();
     state.projectIdea = projectIdeaInput.value.trim();
+    state.teamLead = teamLeadInput.value.trim();
 
     // Save team members
-    state.teamMembers = [];
+
     const memberRows = teamMembersContainer.querySelectorAll(
       ".team-member-row",
     );
@@ -204,23 +194,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function validateDeadlines() {
     // Save deadlines
-    state.deadlines = [];
-    const deadlineRows = deadlinesContainer.querySelectorAll(".deadline-row");
+    const deadline1 = deadlinesContainer.querySelector(".deadline-row-1");
+    const prototypeDate = deadline1.querySelector(".prototype-deadline-date");
+    const deadline2 = deadlinesContainer.querySelector(".deadline-row-2");
+    const fpDate = deadline2.querySelector(".final-product-deadline-date");
 
-    deadlineRows.forEach((row) => {
-      const descriptionInput = row.querySelector(".deadline-description");
-      const dateInput = row.querySelector(".deadline-date");
-
-      if (descriptionInput.value.trim() && dateInput.value) {
-        state.deadlines.push({
-          description: descriptionInput.value.trim(),
-          date: dateInput.value,
-        });
-      }
-    });
-
-    // Save fallback plan
-    state.fallbackPlan = document.getElementById("fallback-text").value.trim();
+    if (prototypeDate.value && fpDate.value) {
+      state.firstPrototypeDate = prototypeDate.value;
+      state.finalProductDate = fpDate.value;
+    }
 
     return true;
   }
@@ -316,56 +298,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Deadlines
-  function addDeadline() {
-    const newRow = document.createElement("div");
-    newRow.className = "deadline-row";
+  // // Deadlines
+  // function addDeadline() {
+  //   const newRow = document.createElement("div");
+  //   newRow.className = "deadline-row";
 
-    newRow.innerHTML = `
-            <input type="text" class="deadline-description" placeholder="Deadline description">
-            <input type="date" class="deadline-date">
-            <button class="remove-deadline-button">×</button>
-        `;
+  //   newRow.innerHTML = `
+  //           <input type="text" class="deadline-description" placeholder="Deadline description">
+  //           <input type="date" class="deadline-date">
+  //           <button class="remove-deadline-button">×</button>
+  //       `;
 
-    // Add event listener to the remove button
-    const removeButton = newRow.querySelector(".remove-deadline-button");
-    removeButton.addEventListener("click", function () {
-      deadlinesContainer.removeChild(newRow);
-    });
+  //   // Add event listener to the remove button
+  //   const removeButton = newRow.querySelector(".remove-deadline-button");
+  //   removeButton.addEventListener("click", function () {
+  //     deadlinesContainer.removeChild(newRow);
+  //   });
 
-    deadlinesContainer.appendChild(newRow);
-  }
-
-  // Fallback dropdown
-  function handleFallbackSelection() {
-    const fallbackText = document.getElementById("fallback-text");
-
-    if (fallbackDropdown.value) {
-      let selectedText = "";
-
-      switch (fallbackDropdown.value) {
-        case "mock":
-          selectedText = "If the API fails, we will use mock data.";
-          break;
-        case "simplified":
-          selectedText =
-            "If time runs out, we will create a simplified version of the project.";
-          break;
-        case "focus":
-          selectedText =
-            "If the scope becomes too large, we will focus on core features only.";
-          break;
-        case "pair":
-          selectedText =
-            "If someone gets stuck, we will use pair programming to solve the issue.";
-          break;
-      }
-
-      fallbackText.value = fallbackText.value
-        ? `${fallbackText.value}\n${selectedText}`
-        : selectedText;
-    }
-  }
+  //   deadlinesContainer.appendChild(newRow);
+  // }
 
   // Review page
   function updateReviewPage() {
@@ -389,33 +340,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const deadlinesList = document.getElementById("review-deadlines");
     deadlinesList.innerHTML = "";
 
-    if (state.deadlines.length === 0) {
-      deadlinesList.innerHTML = "<p>No deadlines set</p>";
-    } else {
-      state.deadlines.forEach((deadline) => {
-        const deadlineItem = document.createElement("p");
-        const formattedDate = new Date(deadline.date).toLocaleDateString();
-        deadlineItem.innerHTML =
-          `<strong>${deadline.description}</strong>: ${formattedDate}`;
-        deadlinesList.appendChild(deadlineItem);
-      });
-    }
-
-    // Fallback plan
-    document.getElementById("review-fallback").textContent =
-      state.fallbackPlan || "No fallback plan specified";
+    const deadlineItem1 = document.createElement("p");
+    const deadlineItem2 = document.createElement("p");
+    const formattedDate1 = new Date(
+      state.firstPrototypeDate,
+    ).toLocaleDateString();
+    const formattedDate2 = new Date(
+      state.finalProductDate,
+    ).toLocaleDateString();
+    deadlineItem1.innerHTML =
+      `<strong>First Prototype</strong>: ${formattedDate1}`;
+    deadlineItem2.innerHTML =
+      `<strong>Final Product</strong>: ${formattedDate2}`;
+    deadlinesList.appendChild(deadlineItem1);
+    deadlinesList.appendChild(deadlineItem2);
 
     // Decision method
     let methodText = "";
     switch (state.decisionMethod) {
-      case "majority":
-        methodText = "Majority vote";
+      case "Majority Vote":
+        methodText = "Majority Vote";
         break;
-      case "lead":
-        methodText = "Team lead decides";
-        break;
-      case "consensus":
-        methodText = "Consensus required";
+      case "Representative Decision":
+        methodText = "Representative Decision";
         break;
     }
 
@@ -424,137 +371,72 @@ document.addEventListener("DOMContentLoaded", function () {
       state.customRules || "None";
   }
 
-  // Signature page
-  function generateSignatureFields() {
-    const signaturesContainer = document.getElementById("signatures-container");
-    signaturesContainer.innerHTML = "";
-
-    state.teamMembers.forEach((member, index) => {
-      const signatureRow = document.createElement("div");
-      signatureRow.className = "signature-row";
-
-      signatureRow.innerHTML = `
-                <div class="signature-name">
-                    <strong>${member.name}</strong> (${member.role})
-                </div>
-                <div class="signature-checkbox">
-                    <input type="checkbox" id="signature-${index}" class="signature-check">
-                    <label for="signature-${index}">I agree to the terms of this pact.</label>
-                </div>
-            `;
-
-      signaturesContainer.appendChild(signatureRow);
-    });
-
-    // Update signature counts
-    document.getElementById("total-members").textContent =
-      state.teamMembers.length;
-
-    // Add event listeners to checkboxes
-    const checkboxes = signaturesContainer.querySelectorAll(".signature-check");
-    checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", updateSignatureCount);
-    });
-  }
-
-  function updateSignatureCount() {
-    const checkboxes = document.querySelectorAll(".signature-check");
-    const signedCount = Array.from(checkboxes).filter((checkbox) =>
-      checkbox.checked
-    ).length;
-
-    document.getElementById("signed-count").textContent = signedCount;
-
-    // Enable finalize button if all members have signed
-    finalizeButton.disabled = signedCount !== state.teamMembers.length;
+  function signPage() {
+    const signatureName = document.querySelector(".signature-name");
+    signatureName.innerHTML = `
+    <strong>${state.teamLead}</strong>`;
   }
 
   // Finalize pact
-  function finalizePact() {
-    alert(
-      "Team pact has been finalized! All members have signed the agreement.",
-    );
-    navigateToPage(7); // Go to voting page as an example
-  }
+  async function finalizePact() {
+    const signaturesContainer = document.getElementById("signatures-container");
 
-  // Voting
-  function handleVote(event) {
-    if (state.userVoted) {
-      alert("You have already voted!");
-      return;
+    // Add event listeners to checkboxes
+    const checkbox = signaturesContainer.querySelector(".signature-check");
+    finalizeButton.disabled = checkbox.checked;
+
+    console.log(checkbox.checked);
+
+    if (checkbox.checked) {
+      state.signedAgreement = true;
+      const response = await fetch("/api/contract/create", {
+        method: "POST",
+        // Convert state to contract object.
+        body: JSON.stringify(contractFromState(state)),
+      });
+      const responseBody = await response.json();
+      state.id = responseBody.id;
+      alert(
+        "Team pact has been finalized! Team Representative signed the agreement.",
+      );
+
+      navigateToPage(7);
     }
-
-    const voteType = event.currentTarget.getAttribute("data-vote");
-
-    // Update state
-    state.votes[voteType]++;
-    state.userVoted = true;
-
-    // Disable voting buttons
-    voteOptions.forEach((option) => {
-      option.disabled = true;
-      option.classList.add("voted");
-    });
-
-    // Show waiting message
-    document.getElementById("voting-message").textContent =
-      "Thank you! Waiting for other members to vote...";
-
-    // For demo purposes, show results after a delay
-    setTimeout(showVotingResults, 2000);
   }
 
-  function showVotingResults() {
-    // Update chart bars
-    const totalVotes = state.votes.yes + state.votes.no + state.votes.neutral;
+  function contractFromState() {
+    const contract = {
+      id: "",
+      teamName: state.teamName,
+      teamLead: state.teamLead,
+      projectIdea: state.projectIdea,
+      members: state.teamMembers,
+      firstPrototypeDate: state.firstPrototypeDate,
+      finalProductDate: state.finalProductDate,
+      decisionMethod: state.decisionMethod,
+      customRules: state.customRules,
+      signedAgreement: true,
+    };
 
-    const yesBar = document.querySelector(".yes-bar");
-    const noBar = document.querySelector(".no-bar");
-    const neutralBar = document.querySelector(".neutral-bar");
-
-    yesBar.style.width = `${(state.votes.yes / totalVotes) * 100}%`;
-    noBar.style.width = `${(state.votes.no / totalVotes) * 100}%`;
-    neutralBar.style.width = `${(state.votes.neutral / totalVotes) * 100}%`;
-
-    yesBar.querySelector(".vote-count").textContent = state.votes.yes;
-    noBar.querySelector(".vote-count").textContent = state.votes.no;
-    neutralBar.querySelector(".vote-count").textContent = state.votes.neutral;
-
-    // Show results
-    document.getElementById("voting-results").classList.remove("hidden");
-    document.getElementById("voting-message").textContent =
-      "Voting complete! Here are the results:";
+    return contract;
   }
 
-  function createNewVote() {
-    // Reset voting state
-    state.votes = { yes: 0, no: 0, neutral: 0 };
-    state.userVoted = false;
-
-    // Enable voting buttons
-    voteOptions.forEach((option) => {
-      option.disabled = false;
-      option.classList.remove("voted");
+  async function showAgreement() {
+    const response = await fetch(`/api/contract/get/${state.id}`, {
+      method: "GET",
     });
+    const responseBody = await response.json();
+    const showTeamName = document.querySelector(".team-name");
+    const showprojectidea = document.querySelector(".project-idea");
+    const showTeamlead = document.querySelector(".team-lead");
+    const showDecision = document.querySelector(".decision-method");
+    const showrules = document.querySelector(".custom-rules");
 
-    // Hide results
-    document.getElementById("voting-results").classList.add("hidden");
-
-    // Update question (in a real app, this would be dynamic)
-    const questions = [
-      "Should we switch from Firebase to Supabase?",
-      "Should we extend the project deadline by one week?",
-      "Should we add a dark mode feature to our app?",
-      "Should we prioritize mobile responsiveness over new features?",
-    ];
-
-    const randomQuestion =
-      questions[Math.floor(Math.random() * questions.length)];
-    document.getElementById("vote-question").textContent = randomQuestion;
-
-    // Reset message
-    document.getElementById("voting-message").textContent =
-      "Please cast your vote:";
+    showTeamName.textContent = responseBody.teamName;
+    showprojectidea.textContent = responseBody.projectIdea;
+    showTeamlead.textContent = responseBody.teamLead;
+    showDecision.textContent = responseBody.decisionMethod;
+    showrules.textContent = responseBody.customRules;
   }
 
   // Initialize the app
