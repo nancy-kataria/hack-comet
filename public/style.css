@@ -311,9 +311,16 @@ th {
 /* Display Agreement */
 
 .display-agreement{
+  margin-top: 40px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.name-display{
+  display: flex;
+  gap: 10px;
 }
 
 /* Voting page */

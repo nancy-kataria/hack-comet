@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const nextButtons = document.querySelectorAll(".next-button");
   const addMemberButton = document.getElementById("add-member-button");
   const teamMembersContainer = document.getElementById(
-    "team-members-container",
+    "team-members-container"
   );
   const membersTable = document
     .getElementById("members-table")
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const deadlinesContainer = document.getElementById("deadlines-container");
   const editSectionButtons = document.querySelectorAll(".edit-section-button");
   const finalizeButton = document.getElementById("finalize-button");
-  const homeButton = document.getElementById("home-navigate-button")
+  const homeButton = document.getElementById("home-navigate-button");
 
   // Initialize the application
   function init() {
@@ -43,9 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
     startButton.addEventListener("click", () => navigateToPage(2));
 
     prevButtons.forEach((button) => {
-      button.addEventListener(
-        "click",
-        () => navigateToPage(state.currentPage - 1),
+      button.addEventListener("click", () =>
+        navigateToPage(state.currentPage - 1)
       );
     });
 
@@ -71,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Finalize button
     finalizeButton.addEventListener("click", finalizePact);
 
-    homeButton.addEventListener("click", () => location.reload())
+    homeButton.addEventListener("click", () => location.reload());
 
     // backToPactButton.addEventListener("click", () => navigateToPage(5));
   }
@@ -167,9 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Save team members
 
-    const memberRows = teamMembersContainer.querySelectorAll(
-      ".team-member-row",
-    );
+    const memberRows =
+      teamMembersContainer.querySelectorAll(".team-member-row");
 
     let isValid = true;
 
@@ -213,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function validateDecisionRules() {
     // Save decision method
     const selectedMethod = document.querySelector(
-      'input[name="decision-method"]:checked',
+      'input[name="decision-method"]:checked'
     );
 
     if (!selectedMethod) {
@@ -243,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Enable all remove buttons when we have more than one member
     const removeButtons = teamMembersContainer.querySelectorAll(
-      ".remove-member-button",
+      ".remove-member-button"
     );
     removeButtons.forEach((button) => {
       button.disabled = false;
@@ -256,9 +254,8 @@ document.addEventListener("DOMContentLoaded", function () {
       updateMembersTable();
 
       // If only one member is left, disable its remove button
-      const remainingRows = teamMembersContainer.querySelectorAll(
-        ".team-member-row",
-      );
+      const remainingRows =
+        teamMembersContainer.querySelectorAll(".team-member-row");
       if (remainingRows.length === 1) {
         remainingRows[0].querySelector(".remove-member-button").disabled = true;
       }
@@ -279,9 +276,8 @@ document.addEventListener("DOMContentLoaded", function () {
     membersTable.innerHTML = "";
 
     // Get all member rows
-    const memberRows = teamMembersContainer.querySelectorAll(
-      ".team-member-row",
-    );
+    const memberRows =
+      teamMembersContainer.querySelectorAll(".team-member-row");
 
     // Add each member to the table
     memberRows.forEach((row) => {
@@ -334,8 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     state.teamMembers.forEach((member) => {
       const memberItem = document.createElement("p");
-      memberItem.innerHTML =
-        `<strong>${member.name}</strong> - ${member.role} (${member.email})`;
+      memberItem.innerHTML = `<strong>${member.name}</strong> - ${member.role} (${member.email})`;
       membersList.appendChild(memberItem);
     });
 
@@ -346,15 +341,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const deadlineItem1 = document.createElement("p");
     const deadlineItem2 = document.createElement("p");
     const formattedDate1 = new Date(
-      state.firstPrototypeDate,
+      state.firstPrototypeDate
     ).toLocaleDateString();
     const formattedDate2 = new Date(
-      state.finalProductDate,
+      state.finalProductDate
     ).toLocaleDateString();
-    deadlineItem1.innerHTML =
-      `<strong>First Prototype</strong>: ${formattedDate1}`;
-    deadlineItem2.innerHTML =
-      `<strong>Final Product</strong>: ${formattedDate2}`;
+    deadlineItem1.innerHTML = `<strong>First Prototype</strong>: ${formattedDate1}`;
+    deadlineItem2.innerHTML = `<strong>Final Product</strong>: ${formattedDate2}`;
     deadlinesList.appendChild(deadlineItem1);
     deadlinesList.appendChild(deadlineItem2);
 
@@ -400,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const responseBody = await response.json();
       state.id = responseBody.id;
       alert(
-        "Team pact has been finalized! Team Representative signed the agreement.",
+        "Team pact has been finalized! Team Representative signed the agreement."
       );
 
       navigateToPage(7);
@@ -440,6 +433,21 @@ document.addEventListener("DOMContentLoaded", function () {
     showTeamlead.textContent = responseBody.teamLead;
     showDecision.textContent = responseBody.decisionMethod;
     showrules.textContent = responseBody.customRules;
+
+    const showTeammembers = document.querySelector(".display-team-members");
+
+    for (let i = 0; i < responseBody.members.length; i++) {
+      const childEl = document.createElement("div");
+      childEl.className = "name-display";
+      showTeammembers.appendChild(childEl);
+
+      const paraEl1 = document.createElement("p");
+      paraEl1.textContent = `${responseBody.members[i].name}`;
+      const paraEl2 = document.createElement("p");
+      paraEl2.textContent = `${responseBody.members[i].role}`;
+      childEl.appendChild(paraEl1);
+      childEl.appendChild(paraEl2);
+    }
   }
 
   // Initialize the app
