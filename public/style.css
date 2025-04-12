@@ -308,6 +308,14 @@ th {
   transform: scale(1.5);
 }
 
+/* Display Agreement */
+
+.display-agreement{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* Voting page */
 .voting-container {
   max-width: 600px;
